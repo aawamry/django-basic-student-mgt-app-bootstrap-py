@@ -1,0 +1,104 @@
+{% extends "crm/layout.html" %}
+{% block content %}
+    
+        <h3 class="m-4">All Students</h3>
+        <div class="row">
+            <div class="col-12">
+                {% if Students %}
+                <div class="card border-light ms-4 me-4 mb-4">
+                    <div class="card-body">
+                      <p class="card-text"><div class="card border-light ms-4 me-4 mb-4">
+                        <div class="card-header"><i class="fa-solid fa-list"></i> All Students
+                            <span class="visually-hidden">(current)</span>
+                        </div>
+                            <div class="card-body">
+                              <p class="card-text"><div class="table-responsive">
+                              <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">ID</th>
+                                      <th scope="col">First Name</th>
+                                      <th scope="col">Last Name</th>
+                                      <th scope="col">Email</th>
+                                      <th scope="col">Field of Study</th>
+                                      <th scope="col">GPA</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                    <tbody>
+                                    {%for Student in Students%}
+                                    <tr>
+                                      <td>{{Student.id}}</td>
+                                      <td>{{Student.first_name}}</td>
+                                      <td>{{Student.last_name}}</td>
+                                      <td>{{Student.email}}</td>
+                                      <td>{{Student.field_of_study}}</td>
+                                      <td>{{Student.gpa}}</td>
+                                      <td><button type='button' class='btn btn-success me-1' href="{% url 'view_student' Student.id %}" data-bs-toggle='modal' data-bs-target='#myModal{{Student.id}}'><i class="fa-solid fa-circle-info fa-lg"></i></button>
+                                          <div class="modal" id='myModal{{Student.id}}' tabindex='-1' aria-labelledby='myModalLabel1' aria-hidden='true'>
+                                              <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title">Student:{{Student.first_name}} {{Student.last_name}}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true"></span>
+                                                    </button>
+                                                    </div>
+                                                <div class="modal-body">
+                                                  <ul class='list-unstyled'>
+                                                    <li>Student ID: {{Student.id}}</li>
+                                                    <li>First Name: <strong>{{Student.first_name}}</strong></li>
+                                                    <li>Last Name: <strong>{{Student.last_name}}</strong></li>
+                                                    <li>EMail: <strong>{{Student.email}}</strong></li>
+                                                    <li>Field of Study: <strong>{{Student.field_of_study}}</strong></li>
+                                                    <li>GPA: <strong>{{Student.gpa}}</strong></li>
+                                                  </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <a href="{% url "edit" Student.id %}" class="btn btn-warning me-1"><i class="fa-solid fa-pen-to-square"></i></a>
+
+                                          <!-- Delete Modal -->
+
+                                          <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#delete{{Student.id}}'><i class="fa-solid fa-trash-can"></i></button>
+                                          <div class="modal" id='delete{{Student.id}}' tabindex='-1' aria-labelledby='myModalLabel1' aria-hidden='true'>
+                                            <div class="modal-dialog" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title">Student:{{Student.first_name}} {{Student.last_name}}</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true"></span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are You Sure you want to delete the student?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <form action="{% url "delete" Student.id %}" method='POST'>
+                                                  {% csrf_token %}
+                                                  <input type="submit" class="btn btn-primary" value='Delete'>
+                                                </form>
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </td>
+                                   </tr>
+                                   {% endfor %}
+                                  </tbody>
+                    </div>
+                    
+                {% else %}
+                <h5 class="alert alert-primary ms-4 me-4">No Students Records</h5>
+                {% endif %}
+                  
+                  </div>
+            </div>
+        </div>
+    
+{% endblock content %}
